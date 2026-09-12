@@ -4,13 +4,13 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        -- Arch/Omarchy: pacman swift-bin provides /usr/bin/sourcekit-lsp.
-        -- Not available via mason; do not let mason try to install it.
+        -- Arch/Omarchy: pacman `swift-bin` ships /usr/bin/sourcekit-lsp (GUI PATH).
+        -- Swiftly also provides it once libncurses.so.6 is shimmed for Arch.
+        -- Not installable via mason.
         sourcekit = {
           mason = false,
-          cmd = { "sourcekit-lsp" },
+          -- Keep C/C++ for clangd; sourcekit default also claims c/cpp.
           filetypes = { "swift", "objc", "objcpp" },
-          root_markers = { "Package.swift", ".git" },
         },
       },
     },
