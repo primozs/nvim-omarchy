@@ -1,21 +1,19 @@
+-- Swift lint via mise/system swiftlint (docker wrapper removed).
 local lint = require("lint")
 
-lint.linters_by_ft = {
+lint.linters_by_ft = vim.tbl_extend("force", lint.linters_by_ft or {}, {
   swift = { "swiftlint" },
-}
+})
 
--- Configure swiftlint without --use-stdin
 lint.linters.swiftlint = {
   name = "swiftlint",
-  cmd = vim.fn.expand("~/bin/swiftlint-docker"),
-  stdin = false, -- Changed from true to false
+  cmd = "swiftlint",
+  stdin = false,
   args = {
     "lint",
     "--config",
     ".swiftlint.yml",
     "--quiet",
-    -- "--force-exclude", -- Forces respect of excluded: paths
-    -- "--path",
   },
   stream = "stdout",
   ignore_exitcode = true,
@@ -31,7 +29,6 @@ lint.linters.swiftlint = {
   ),
 }
 
--- Auto-lint on save
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = { "*.swift" },
   callback = function()
