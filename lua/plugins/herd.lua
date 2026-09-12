@@ -65,7 +65,7 @@ return {
     dir = vim.fn.stdpath("config"),
     lazy = false,
     config = function()
-      require("herd.status_notify").start({ interval_ms = 2000 })
+      require("herd.status_notify").start({ interval_ms = 500 })
     end,
   },
 }
