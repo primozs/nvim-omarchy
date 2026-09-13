@@ -73,6 +73,13 @@ end
 
 local function publish_hosted()
   vim.fn.mkdir(presence_dir(), "p")
+  -- Drop presence files from dead nvim PIDs so focus/host checks stay accurate.
+  for _, path in ipairs(vim.fn.glob(presence_dir() .. "/*.json", false, true)) do
+    local pid = tonumber(vim.fn.fnamemodify(path, ":t:r"))
+    if pid and not vim.uv.fs_stat("/proc/" .. pid) then
+      pcall(vim.fn.delete, path)
+    end
+  end
   local rows = {}
   local viewing = nil
   local ok, Terminal = pcall(require, "herd.terminal")
