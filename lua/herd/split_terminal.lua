@@ -144,6 +144,50 @@ local function setup_nav(buf)
   end
 end
 
+--- Enter terminal insert when focusing the panel (e.g. Ctrl-l from the editor),
+--- unless the user intentionally left the prompt in normal mode.
+local function setup_focus(buf)
+  local normal_mode = false
+  local group = vim.api.nvim_create_augroup("herd_split_focus_" .. buf, { clear = true })
+
+  local function focused_here()
+    return vim.api.nvim_get_current_buf() == buf
+  end
+
+  vim.api.nvim_create_autocmd({ "TermLeave", "TermEnter" }, {
+    group = group,
+    buffer = buf,
+    callback = function()
+      if not focused_here() then
+        return
+      end
+      vim.schedule(function()
+        normal_mode = vim.fn.mode() ~= "t" and focused_here()
+      end)
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("WinEnter", {
+    group = group,
+    buffer = buf,
+    callback = function()
+      if normal_mode then
+        vim.cmd.stopinsert()
+      else
+        vim.cmd.startinsert()
+      end
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("BufWipeout", {
+    group = group,
+    buffer = buf,
+    callback = function()
+      pcall(vim.api.nvim_del_augroup_by_id, group)
+    end,
+  })
+end
+
 ---@param opts? { width?: number }
 function M.apply(opts)
   opts = opts or {}
@@ -171,6 +215,7 @@ function M.apply(opts)
       for _, e in pairs(Terminal.reg) do
         if e.buf == ev.buf then
           setup_nav(ev.buf)
+          setup_focus(ev.buf)
           break
         end
       end
