@@ -150,9 +150,23 @@ function M.apply(opts)
   local split_width = opts.width or 80
 
   local Terminal = require("herd.terminal")
+  local SplitWidth = require("herd.split_width")
 
+  local function restore_widths()
+    local wins = SplitWidth.wins_needing_restore(
+      Terminal.reg,
+      split_width,
+      vim.api.nvim_win_get_width,
+      vim.api.nvim_win_is_valid
+    )
+    for _, win in ipairs(wins) do
+      pcall(vim.api.nvim_win_set_width, win, split_width)
+    end
+  end
+
+  local group = vim.api.nvim_create_augroup("herd_split_nav", { clear = true })
   vim.api.nvim_create_autocmd("TermOpen", {
-    group = vim.api.nvim_create_augroup("herd_split_nav", { clear = true }),
+    group = group,
     callback = function(ev)
       for _, e in pairs(Terminal.reg) do
         if e.buf == ev.buf then
@@ -160,6 +174,14 @@ function M.apply(opts)
           break
         end
       end
+    end,
+  })
+  -- winfixwidth only helps on open/close; VimResized still redistributes columns
+  -- (worse with neo-tree open). Re-assert the fixed split width after resizes.
+  vim.api.nvim_create_autocmd(SplitWidth.RESTORE_EVENTS, {
+    group = group,
+    callback = function()
+      vim.schedule(restore_widths)
     end,
   })
 
