@@ -57,9 +57,6 @@ return {
       require("herd.project_workspace").apply()
       require("herd.split_terminal").apply({ width = sidekick_split_width() })
       vim.keymap.set("n", "<leader>hS", global_picker, { desc = "herd: all projects" })
-      -- Must live here: a sibling Lazy plugin with dir=stdpath("config") collides with
-      -- theme-hotreload (same dir) and its config never runs on a fresh nvim start.
-      require("herd.status_notify").start({ interval_ms = 500 })
     end,
   },
 }
