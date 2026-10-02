@@ -54,6 +54,7 @@ return {
     },
     config = function(_, opts)
       require("herd").setup(opts)
+      require("herd.compat").apply() -- herdr ≥ 0.9: attach --takeover + detected agents
       require("herd.project_workspace").apply()
       require("herd.split_terminal").apply({ width = sidekick_split_width() })
       vim.keymap.set("n", "<leader>hS", global_picker, { desc = "herd: all projects" })
