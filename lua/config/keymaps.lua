@@ -39,5 +39,12 @@ local function focus_term()
 end
 map({ "n", "t" }, "<C-7>", focus_term, { desc = "Terminal (Root Dir)" })
 
--- Same as bash Ctrl+f → tmux-sessionizer (nvim-personal)
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+-- Bash herdr-sessionizer (same as shell Ctrl+f). noice <c-f> disabled in
+-- plugins/herdr-sessionizer.lua. Needs a real TTY for fzf — do not use silent
+-- (silent :! has no TTY → herdr-sessionizer exits instantly). Snacks.terminal
+-- gives a pty; auto_close when the CLI exits.
+vim.schedule(function()
+  vim.keymap.set("n", "<C-f>", function()
+    Snacks.terminal({ "herdr-sessionizer" }, { auto_close = true, interactive = true })
+  end, { desc = "herdr-sessionizer" })
+end)
