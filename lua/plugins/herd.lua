@@ -35,7 +35,8 @@ return {
     dependencies = { "folke/sidekick.nvim" },
     opts = {
       mode = "float", -- PTY host mode; display is patched to right split below
-      -- workspace is set dynamically per git root (see herd.project_workspace)
+      -- agent host workspace = herd:<git-root> (see herd.project_workspace; must
+      -- not match the editor workspace or float prune closes the nvim tab)
       tools = {
         pi = { cmd = { "pi" } },
         -- claude = { cmd = { "claude" } },
