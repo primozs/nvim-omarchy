@@ -118,11 +118,12 @@ end
 
 --- Sidekick-style window nav from terminal insert mode (no Ctrl-\\ Ctrl-n first).
 local function setup_nav(buf)
+  local NavEdge = require("herd.nav_edge")
   ---@param dir "h"|"j"|"k"|"l"
   local function nav(dir)
     return function()
       if vim.fn.winnr() == vim.fn.winnr(dir) then
-        return ("<C-%s>"):format(dir)
+        return NavEdge.edge_passthrough(dir)
       end
       vim.schedule(function()
         vim.cmd.wincmd(dir)
