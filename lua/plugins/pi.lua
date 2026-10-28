@@ -1,6 +1,7 @@
 return {
   {
     "pablopunk/pi.nvim",
+    enabled = false,
     cmd = { "PiAsk", "PiAskSelection", "PiCancel", "PiLog", "PiSearch" },
     -- stylua: ignore
     keys = {
