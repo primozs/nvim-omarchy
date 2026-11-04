@@ -6,7 +6,7 @@ return {
     -- stylua: ignore
     keys = {
       { "<leader>ai", ":PiAsk<CR>",          mode = "n", desc = "Pi: Ask (buffer)" },
-      { "<leader>aei", ":PiAskSelection<CR>", mode = "v", desc = "Pi: Ask (selection)" },
+      { "<leader>ai", ":PiAskSelection<CR>", mode = "v", desc = "Pi: Ask (selection)" },
       { "<leader>aeC", ":PiCancel<CR>",       mode = "n", desc = "Pi: Cancel" },
       { "<leader>aeL", ":PiLog<CR>",          mode = "n", desc = "Pi: Log" },
       { "<leader>aS", ":PiSearch<CR>",       mode = "n", desc = "Pi: Search → quickfix" },
