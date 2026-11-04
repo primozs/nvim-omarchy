@@ -201,6 +201,7 @@ end
 return {
   {
     "folke/sidekick.nvim",
+    enabled = true,
     init = function()
       vim.g.sidekick_nes = false
     end,
