@@ -40,6 +40,10 @@ return {
       tools = {
         pi = { cmd = { "pi" } },
         -- claude = { cmd = { "claude" } },
+        -- mise installs qwen as a node shim; ~/.local/share/mise/command-wrappers/bin/qwen
+        -- sets HERDR_AGENT=qwen so herdr can detect readiness (else agent start times out
+        -- and the nvim panel never opens). Also: herdr integration install qwen
+        qwen = { cmd = { "qwen" }, kind = "qwen" },
         cursor = { cmd = { "cursor-agent" }, kind = "cursor" },
         codex = { cmd = { "codex" }, kind = "codex" },
       },
